@@ -1,6 +1,7 @@
 const ONE_HOUR = 3600;
 const d = new Date();
 const hour = d.getHours();
+var enabler = document.getElementById("enabler")
 
 window.addEventListener('load', () => {
     window.setInterval(updateTime, 1000);
@@ -9,7 +10,7 @@ window.addEventListener('load', () => {
     let temperatureDegree = document.querySelector('.temp-degree');
     let temperatureDescription = document.querySelector('.temp-description');
     let tempFeelsLike = document.querySelector('.temp-feels-like')
-    let locationTimezone = document.querySelector('.location-timezone');
+    let city = document.querySelector('.location-timezone');
     let temperatureSection = document.querySelector('.temperature');
     const degreeSpan = document.querySelector('.degree-section span');
     const feelsSpan = document.querySelector('.feelslike span');
@@ -27,9 +28,9 @@ window.addEventListener('load', () => {
                 return response.json();
             })
             .then (data => {
-                // console.log(data)
+                console.log(data)
                 const curr = d.getTime() / 1000
-                document.getElementById('enabler').classList.add('invisible');
+                enabler.classList.add('invisible');
 
                 const { temp, feels_like, dt, sunrise, sunset } = data.current;
                 const { id, description } = data.current.weather[0];
@@ -40,8 +41,10 @@ window.addEventListener('load', () => {
                 temperatureDegree.textContent = Math.round(temp);
                 tempFeelsLike.textContent = Math.round(feels_like);
                 temperatureDescription.textContent = description.toLowerCase();
-                locationTimezone.textContent = timezone.toLowerCase();
-                
+
+                // get city name
+                i = timezone.lastIndexOf('/')
+                city.textContent = timezone.toLowerCase().slice(i + 1);
                 
                 // Set background
                 changeBg(dt, sunrise, sunset)
@@ -69,16 +72,35 @@ window.addEventListener('load', () => {
                     };      
                 });
             });
-        });         
+        }, showError);         
+    } else {
+        enabler.innerHTML = "your browser does not support weether, sorry! ಥ_ಥ"
     };
 
 // functions
+
+    // handle geolocation errors
+    function showError(error) {
+        switch(error.code) {
+        case error.PERMISSION_DENIED:
+            enabler.innerHTML = "location access blocked ಥ_ಥ"
+            break;
+        case error.POSITION_UNAVAILABLE:
+            enabler.innerHTML = "location information is unavailable ಥ_ಥ"
+            break;
+        case error.TIMEOUT:
+            enabler.innerHTML = "user location request timeout ಥ_ಥ"
+            break;
+        case error.UNKNOWN_ERROR:
+            enabler.innerHTML = "an unknown error occurred ಥ_ಥ"
+            break;
+        }
+    }
 
     // set weather icon
     function setIcon(icon, iconID, weatherID) {
         const skycons = new Skycons({color: "white"});
         let currentIcon;
-        console.log(icon)
         switch (icon){
             case "01d":
                 currentIcon =  "CLEAR_DAY";
@@ -136,8 +158,8 @@ window.addEventListener('load', () => {
                     currentIcon = "SNOW";
                 }
                 break;
-            case "15d":
-            case "15n":
+            case "50d":
+            case "50n":
                 currentIcon = "FOG";
                 break;
         }
@@ -165,7 +187,7 @@ window.addEventListener('load', () => {
     function updateTime() {
         var currTime = "";
         var now = new Date();
-        currTime += ('0' + now.getHours()).slice(-2) +":" + ('0' + now.getMinutes()).slice(-2) + ":" + ('0' + now.getSeconds()).slice(-2);
+        currTime += ('0' + now.getHours()).slice(-2) +":" + ('0' + now.getMinutes()).slice(-2);
         document.getElementById("time").innerHTML = currTime;
     };
 });
