@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,400;1,100&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.max-width {
+    max-width: 1300px;
+    padding: 0px 80px;
+    margin: auto;
+}
+
+
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Josefin Sans', sans-serif;
+    background: white;
+    color: white;
+}
+
+.enabler {
+    color: pink;
+
+}
+
+.invisible {
+    display: none;
+}
+
+.day {
+    background: linear-gradient(rgb(157, 239, 253), white)
+}
+.night {
+    background: linear-gradient(rgb(34, 26, 34), rgb(110, 76, 110))
+}
+.sunrise {
+    background: linear-gradient( orange, pink)
+}
+.sunset {
+    background: linear-gradient(rgb(182, 48, 48), orange)
+}
+
+.location, 
+.temperature {
+    height: 30vh;
+    width: 50%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.location-timezone {
+    position: sticky;
+}
+
+.temperature {
+    flex-direction: column;
+}
+
+.degree-section, .feelslike {
+    display: flex;
+    align-items: center;
+}
+
+.degree-section {
+    cursor: pointer;
+}
+
+.degree-section span {
+    margin: 5px;
+    font-size: 30px;
+}
+
+.degree-section h2 {
+    font-size: 40px;
+}
+
+.feelslike h4 {
+    margin: 10px;
+    font-size: 20px;
+}
+
+@media (max-width: 1000px) {
+    .location {
+        flex-direction: column;
+    }
+}
